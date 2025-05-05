@@ -1,0 +1,51 @@
+/* Estados de carregamento e erro */
+#loading-indicator {
+  display: none;
+  text-align: center;
+  padding: 20px;
+}
+
+#error-display {
+  display: none;
+  background: #ffeeee;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 10px 0;
+  text-align: center;
+}
+
+/* Cards */
+.jogo-card {
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.jogo-card.real {
+  border-left: 4px solid #4CAF50;
+  background: #f8fff8;
+}
+
+.jogo-card.mock {
+  border-left: 4px solid #9E9E9E;
+  background: #f5f5f5;
+}
+
+.jogo-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.jogo-icone {
+  font-size: 1.5em;
+}
+
+.mock-aviso {
+  font-size: 0.8em;
+  color: #616161;
+  margin-top: 10px;
+  font-style: italic;
+}

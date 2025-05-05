@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA ProStats | Análises, Estatísticas e Prognósticos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nbaBlue: '#1D428A',
+                        nbaRed: '#C8102E',
+                        nbaSilver: '#BEC0C2',
+                        darkBg: '#0F172A',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0F172A;
+            color: white;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #1D428A 0%, #0F172A 100%);
+        }
+        
+        .team-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .game-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid #C8102E;
+        }
+        
+        .game-card:hover {
+            background-color: rgba(29, 66, 138, 0.3);
+        }
+        
+        .stat-bar {
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #C8102E 0%, #1D428A 100%);
+        }
+        
+        .ai-response {
+            border-left: 4px solid #3B82F6;
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+        
+        .blink {
+            animation: blink 2s infinite;
+        }
+        
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        #live-games {
+            border-top: 2px dashed #C8102E;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg shadow-lg">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <i class="fas fa-basketball-ball text-3xl text-nbaRed"></i>
+                    <h1 class="text-2xl font-bold">NBA<span class="text-nbaRed">ProStats</span></h1>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#destaques" class="hover:text-nbaRed transition">Destaques</a>
+                    <a href="#jogos" class="hover:text-nbaRed transition">Jogos do Dia</a>
+                    <a href="#estatisticas" class="hover:text-nbaRed transition">Estatísticas</a>
+                    <a href="#ai" class="hover:text-nbaRed transition">AI Tips</a>
+                    <a href="#apostas" class="bg-nbaRed px-4 py-2 rounded-lg hover:bg-red-700 transition">Apostas</a>
+                </nav>
+                <button class="md:hidden text-2xl">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg py-16">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6">Análises <span class="text-nbaRed">Avançadas</span> da NBA</h2>
+                    <p class="text-xl mb-8 text-nbaSilver">Estatísticas em tempo real, prognósticos precisos e dicas de apostas geradas por IA para maximizar seus ganhos.</p>
+                    <div class="flex space-x-4">
+                        <button class="bg-nbaRed px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition">Ver Jogos de Hoje</button>
+                        <button class="border border-nbaSilver px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-darkBg transition">AI Betting Tips</button>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="relative">
+                        <img src="https://cdn.nba.com/manage/2023/02/NBA-75-DESK-1920x1080-1-1568x882.jpg" alt="NBA Players" class="rounded-xl shadow-2xl w-full max-w-lg">
+                        <div class="absolute -bottom-6 -right-6 bg-darkBg p-4 rounded-xl shadow-lg border border-nbaSilver">
+                            <div class="flex items-center">
+                                <div class="bg-nbaRed p-3 rounded-full mr-3">
+                                    <i class="fas fa-bolt text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-nbaSilver">LIVE STATS</p>
+                                    <p class="font-bold">+2.4M dados analisados</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Games -->
+    <section id="live-games" class="py-12 bg-darkBg">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center mb-8">
+                <h3 class="text-2xl font-bold flex items-center">
+                    <span class="w-3 h-3 bg-red-500 rounded-full mr-2 blink"></span>
+                    JOGOS AO VIVO
+                </h3>
+                <a href="#" class="text-nbaSilver hover:text-nbaRed text-sm">Ver todos</a>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Game 1 -->
+                <div class="game-card bg-gray-800 p-6 rounded-lg">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-sm text-nbaSilver">1º Quarto - 5:32</span>
+                        <span class="bg-nbaRed text-xs px-2 py-1 rounded">AO VIVO</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-6">
+                        <div class="flex items-center">
+                            <img src="https://cdn.nba.com/logos/nba/1610612748/primary/L/logo.svg" alt="Heat" class="w-12 h-12 mr-3">
+                            <span class="font-medium">Miami Heat</span>
+                        </div>
+                        <span class="text-xl font-bold">54</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center">
+                            <img src="https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg" alt="Celtics" class="w-12 h-12 mr-3">
+                            <span class="font-medium">Boston Celtics</span>
+                        </div>
+                        <span class="text-xl font-bold">48</span>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-gray-700">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span>Probabilidade de vitória:</span>
+                            <span>62% - 38%</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2">
+                            <div class="bg-gradient-to-r from-nbaRed to-nbaBlue h-2 rounded-full" style="width: 62%"></div>
+                        </div>
+                        <button class="mt-4 w-full bg-nbaBlue py-2 rounded-lg text-sm font-medium hover:bg-blue-800 transition">Ver Análise Completa</button>
+                    </div>
+                </div>
+                
+                <!-- Game 2 -->
+                <div class="game-card bg-gray-800 p-6 rounded-lg">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-sm text-nbaSilver">3º Quarto - 2:15</span>
+                        <span class="bg-nbaRed text-xs px-2 py-1 rounded">AO VIVO</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-6">
+                        <div class="flex items-center">
+                            <img src="https://cdn.nba.com/logos/nba/1610612747/primary/L/logo.svg" alt="Lakers" class="w-12 h-12 mr-3">
+                            <span class="font-medium">LA Lakers</span>
+                        </div>
+                        <span class="text-xl font-bold">78</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center">
+                            <img src="https://cdn.nba.com/logos/nba/1610612744/primary/L/logo.svg" alt="Warriors" class="w-12 h-12 mr-3">
+                            <span class="font-medium">Golden State</span>
+                        </div>
+                        <span class="text-xl font-bold">82</span>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-gray-700">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span>Probabilidade de vitória:</span>
+                            <span>45% - 55%</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2">
+                            <div class="bg-gradient-to-r from-nbaRed to-nbaBlue h-2 rounded-full" style="width: 45%"></div>
+                        </div>
+                        <button class="mt-4 w-full bg-nbaBlue py-2 rounded-lg text-sm font-medium hover:bg-blue-800 transition">Ver Análise Completa</button>
+                    </div>
+                </div>
+                
+                <!-- Game 3 -->
+                <div class="game-card bg-gray-800 p-6 rounded-lg">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-sm text-nbaSilver">Intervalo</span>
+                        <span class="bg-nbaRed text-xs px-2 py-1 rounded">AO VIVO</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-6">
+                        <div class="flex items-center">
+                            <img src="https://cdn.nba.com/logos/nba/1610612751/primary/L/logo.svg" alt="Nets" class="w-12 h-12 mr-3">
+                            <span class="font-medium">Brooklyn Nets</span>
+                        </div>
+                        <span class="text-xl font-bold">56</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center">
+                            <img src="https://cdn.nba.com/logos/nba/1610612752/primary/L/logo.svg" alt="Knicks" class="w-12 h-12 mr-3">
+                            <span class="font-medium">NY Knicks</span>
+                        </div>
+                        <span class="text-xl font-bold">60</span>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-gray-700">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span>Probabilidade de vitória:</span>
+                            <span>51% - 49%</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2">
+                            <div class="bg-gradient-to-r from-nbaRed to-nbaBlue h-2 rounded-full" style="width: 51%"></div>
+                        </div>
+                        <button class="mt-4 w-full bg-nbaBlue py-2 rounded-lg text-sm font-medium hover:bg-blue-800 transition">Ver Análise Completa</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Today's Games -->
+    <section id="jogos" class="py-12 bg-gray-900">
+        <div class="container mx-auto px-4">
+            <h3 class="text-2xl font-bold mb-8">JOGOS DE HOJE <span class="text-nbaSilver text-lg">(30/05/2024)</span></h3>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="text-left text-nbaSilver border-b border-gray-700">
+                            <th class="pb-4">Jogo</th>
+                            <th class="pb-4">Horário</th>
+                            <th class="pb-4">Previsão</th>
+                            <th class="pb-4">Odds</th>
+                            <th class="pb-4">Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Game 1 -->
+                        <tr class="border-b border-gray-700 hover:bg-gray-800 transition">
+                            <td class="py-4">
+                                <div class="flex items-center">
+                                    <img src="https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg" alt="Celtics" class="w-10 h-10 mr-3">
+                                    <span>Boston Celtics</span>
+                                </div>
+                                <div class="flex items-center mt-2">
+                                    <img src="https://cdn.nba.com/logos/nba/1610612754/primary/L/logo.svg" alt="Pacers" class="w-10 h-10 mr-3">
+                                    <span>Indiana Pacers</span>
+                                </div>
+                            </td>
+                            <td>20:30 ET</td>
+                            <td>
+                                <div class="flex items-center">
+                                    <div class="w-16 bg-gray-700 rounded-full h-2 mr-2">
+                                        <div class="bg-nbaBlue h-2 rounded-full" style="width: 68%"></div>
+                                    </div>
+                                    <span>68%</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="bg-green-600 px-2 py-1 rounded text-sm">1.45</span>
+                                <span class="mx-1">-</span>
+                                <span class="bg-blue-600 px-2 py-1 rounded text-sm">2.75</span>
+                            </td>
+                            <td>
+                                <button class="bg-nbaRed px-4 py-1 rounded text-sm hover:bg-red-700 transition">Ver Dicas</button>
+                            </td>
+                        </tr>
+                        
+                        <!-- Game 2 -->
+                        <tr class="border-b border-gray-700 hover:bg-gray-800 transition">
+                            <td class="py-4">
+                                <div class="flex items-center">
+                                    <img src="https://cdn.nba.com/logos/nba/1610612742/primary/L/logo.svg" alt="Mavericks" class="w-10 h-10 mr-3">
+                                    <span>Dallas Mavericks</span>
+                                </div>
+                                <div class="flex items-center mt-2">
+                                    <img src="https://cdn.nba.com/logos/nba/1610612750/primary/L/logo.svg" alt="Timberwolves" class="w-10 h-10 mr-3">
+                                    <span>Minnesota Timberwolves</span>
+                                </div>
+                            </td>
+                            <td>21:00 ET</td>
+                            <td>
+                                <div class="flex items-center">
+                                    <div class="w-16 bg-gray-700 rounded-full h-2 mr-2">
+                                        <div class="bg-nbaBlue h-2 rounded-full" style="width: 52%"></div>
+                                    </div>
+                                    <span>52%</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="bg-green-600 px-2 py-1 rounded text-sm">1.85</span>
+                                <span class="mx-1">-</span>
+                                <span class="bg-blue-600 px-2 py-1 rounded text-sm">1.95</span>
+                            </td>
+                            <td>
+                                <button class="bg-nbaRed px-4 py-1 rounded text-sm hover:bg-red-700 transition">Ver Dicas</button>
+                            </td>
+                        </tr>
+                        
+                        <!-- Game 3 -->
+                        <tr class="border-b border-gray-700 hover:bg-gray-800 transition">
+                            <td class="py-4">
+                                <div class="flex items-center">
+                                    <img src="https://cdn.nba.com/logos/nba/1610612743/primary/L/logo.svg" alt="Nuggets" class="w-10 h-10 mr-3">
+                                    <span>Denver Nuggets</span>
+                                </div>
+                                <div class="flex items-center mt-2">
+                                    <img src="https://cdn.nba.com/logos/nba/1610612756/primary/L/logo.svg" alt="Suns" class="w-10 h-10 mr-3">
+                                    <span>Phoenix Suns</span>
+                                </div>
+                            </td>
+                            <td>22:30 ET</td>
+                            <td>
+                                <div class="flex items-center">
+                                    <div class="w-16 bg-gray-700 rounded-full h-2 mr-2">
+                                        <div class="bg-nbaBlue h-2 rounded-full" style="width: 60%"></div>
+                                    </div>
+                                    <span>60%</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="bg-green-600 px-2 py-1 rounded text-sm">1.65</span>
+                                <span class="mx-1">-</span>
+                                <span class="bg-blue-600 px-2 py-1 rounded text-sm">2.25</span>
+                            </td>
+                            <td>
+                                <button class="bg-nbaRed px-4 py-1 rounded text-sm hover:bg-red-700 transition">Ver Dicas</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="mt-8 flex justify-center">
+                <button class="bg-nbaBlue px-6 py-3 rounded-lg font-medium hover:bg-blue-800 transition flex items-center">
+                    <i class="fas fa-robot mr-2"></i> GERAR BILHETES COM IA
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Betting Tips -->
+    <section id="ai" class="py-12 bg-darkBg">
+        <div class="container mx-auto px-4">
+            <h3 class="text-2xl font-bold mb-8 flex items-center">
+                <i class="fas fa-robot text-nbaRed mr-3"></i> NBA AI BETTING ASSISTANT
+            </h3>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2">
+                    <div class="bg-gray-800 rounded-xl p-6 shadow-lg">
+                        <div class="flex items-center mb-6">
+                            <div class="bg-nbaRed p-3 rounded-full mr-4">
+                                <i class="fas fa-brain text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold">Solicite dicas personalizadas</h4>
+                                <p class="text-nbaSilver">Nossa IA analisa milhões de dados para gerar prognósticos precisos</p>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="flex space-x-4">
+                                <button class="bg-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-600 transition">Melhor aposta do dia</button>
+                                <button class="bg-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-600 transition">Under/Over</button>
+                                <button class="bg-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-600 transition">Jogador destaque</button>
+                            </div>
+                            
+                            <div class="relative">
+                                <input type="text" placeholder="Ex: Qual a melhor aposta para Celtics vs Pacers?" class="w-full bg-gray-700 rounded-lg px-4 py-3 pr-12 focus:outline-none focus:ring-2 focus:ring-nbaRed">
+                                <button class="absolute right-3 top-3 text-nbaRed">
+                                    <i class="fas fa-paper-plane text-xl"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 ai-response p-6 rounded-lg">
+                        <div class="flex items-start mb-4">
+                            <div class="bg-nbaBlue p-2 rounded-full mr-3">
+                                <i class="fas fa-robot text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold mb-2">Análise IA: Celtics vs Pacers</h4>
+                                <p class="text-nbaSilver mb-3">Baseado nos últimos 10 confrontos, estatísticas recentes e desempenho fora de casa, nossa IA recomenda:</p>
+                                
+                                <div class="space-y-3">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center mr-3">
+                                            <i class="fas fa-check text-white text-xs"></i>
+                                        </div>
+                                        <span><strong>Celtics -4.5</strong> (1.90) - 72% de chance</span>
+                                    </div>
+                                    
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center mr-3">
+                                            <i class="fas fa-check text-white text-xs"></i>
+                                        </div>
+                                        <span><strong>Under 215.5 pontos</strong> (1.85) - 68% de chance</span>
+                                    </div>
+                                    
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center mr-3">
+                                            <i class="fas fa-info text-white text-xs"></i>
+                                        </div>
+                                        <span><strong>Jayson Tatum over 28.5 pontos</strong> (1.95) - Risco moderado</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4 p-3 bg-gray-700 rounded-lg">
+                                    <p class="text-sm"><strong>🔍 Insights:</strong> Os Celtics têm melhor defesa nos últimos 5 jogos (102.3 pts sofridos). Pacers sem Myles Turner (lesão) pode impactar rebotes.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="bg-gray-800 rounded-xl p-6 shadow-lg">
+                        <h4 class="text-xl font-bold mb-6 flex items-center">
+                            <i class="fas fa-chart-line text-nbaRed mr-3"></i> Top 5 Apostas IA
+                        </h4>
+                        
+                        <div class="space-y-4">
+                            <!-- Bet 1 -->
+                            <div class="p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition cursor-pointer">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">BOS -4.5</span>
+                                    <span class="bg-green-600 px-2 py-1 rounded text-xs">1.90</span>
+                                </div>
+                                <div class="text-sm text-nbaSilver">Celtics vs Pacers | 72% confiança</div>
+                            </div>
+                            
+                            <!-- Bet 2 -->
+                            <div class="p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition cursor-pointer">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Under 215.5</span>
+                                    <span class="bg-green-600 px-2 py-1 rounded text-xs">1.85</span>
+                                </div>
+                                <div class="text-sm text-nbaSilver">Mavericks vs Timberwolves | 68% confiança</div>
+                            </div>
+                            
+                            <!-- Bet 3 -->
+                            <div class="p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition cursor-pointer">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Nuggets ML</span>
+                                    <span class="bg-green-600 px-2 py-1 rounded text-xs">1.65</span>
+                                </div>
+                                <div class="text-sm text-nbaSilver">Nuggets vs Suns | 65% confiança</div>
+                            </div>
+                            
+                            <!-- Bet 4 -->
+                            <div class="p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition cursor-pointer">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Luka over 32.5 pts</span>
+                                    <span class="bg-blue-600 px-2 py-1 rounded text-xs">2.10</span>
+                                </div>
+                                <div class="text-sm text-nbaSilver">Mavericks vs Timberwolves | 60% confiança</div>
+                            </div>
+                            
+                            <!-- Bet 5 -->
+                            <div class="p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition cursor-pointer">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Jokic triple-double</span>
+                                    <span class="bg-blue-600 px-2 py-1 rounded text-xs">3.50</span>
+                                </div>
+                                <div class="text-sm text-nbaSilver">Nuggets vs Suns | 45% confiança</div>
+                            </div>
+                        </div>
+                        
+                        <button class="mt-6 w-full bg-nbaRed py-2 rounded-lg font-medium hover:bg-red-700 transition">
+                            Gerar Bilhete Automático
+                        </button>
+                    </div>
+                    
+                    <div class="mt-6 bg-gray-800 rounded-xl p-6 shadow-lg">
+                        <h4 class="text-xl font-bold mb-4">📈 Performance IA</h4>
+                        <div class="flex justify-between text-sm mb-2">
+                            <span>Últimos 30 dias:</span>
+                            <span class="font-bold text-green-400">+18.7% ROI</span>
+                        </div>
+                        <div class="flex justify-between text-sm mb-2">
+                            <span>Taxa de acerto:</span>
+                            <span class="font-bold">64.3%</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span>Bilhetes premium:</span>
+                            <span class="font-bold text-nbaRed">72.1%</span>
+                        </div>
+                        
+                        <div class="mt-4 pt-4 border-t border-gray-700">
+                            <p class="text-sm text-nbaSilver">Nossa IA analisa 127 fatores diferentes por jogo, incluindo matchups históricos, desempenho recente, estatísticas avançadas e lesões.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Player Stats -->
+    <section id="estatisticas" class="py-12 bg-gray-900">
+        <div class="container mx-auto px-4">
+            <h3 class="text-2xl font-bold mb-8">ESTATÍSTICAS DOS JOGADORES</h3>
+            
+            <div class="flex flex-wrap mb-6">
+                <button class="bg-nbaRed px-4 py-2 rounded-l-lg">Destaques</button>
+                <button class="bg-gray-700 px-4 py-2">Pontos</button>
+                <button class="bg-gray-700 px-4 py-2">Assistências</button>
+                <button class="bg-gray-700 px-4 py-2">Rebotes</button>
+                <button class="bg-gray-700 px-4 py-2 rounded-r-lg">Eficiência</button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Player 1 -->
+                <div class="bg-gray-800 rounded-lg overflow-hidden hover:shadow-xl transition">
+                    <div class="relative">
+                        <img src="https://cdn.nba.com/headshots/nba/latest/1040x760/2544.png" alt="LeBron James" class="w-full h-48 object-cover">
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                            <h4 class="text-xl font-bold">LeBron James</h4>
+                            <p class="text-sm text-nbaSilver">Los Angeles Lakers | SF</p>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between text-sm mb-3">
+                            <span>25.3 PPG</span>
+                            <span>7.9 RPG</span>
+                            <span>7.5 APG</span>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <div>
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span>Eficiência ofensiva</span>
+                                    <span>58.7%</span>
+                                </div>
+                                <div class="stat-bar" style="width: 58.7%"></div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span>Defesa</span>
+                                    <span>72.3%</span>
+                                </div>
+                                <div class="stat-bar" style="width: 72.3%"></div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span>Clutch</span>
+                                    <span>89.1%</span>
+                                </div>
+                                <div class="stat-bar" style="width: 89.1%"></div>
+                            </div>
+                        </div>
+                        
+                        <button class="mt-4 w-full bg-nbaBlue py-2 rounded-lg text-sm hover:bg-blue-800 transition">
+                            Ver Estatísticas Completas
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Player 2 -->
+                <div class="bg-gray-800 rounded-lg overflow-hidden hover:shadow-xl transition">
+                    <div class="relative">
+                        <img src="https://cdn.nba.com/headshots/nba/latest/1040x760/203999.png" alt="Nikola Jokic" class="w-full h-48 object-cover">
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                            <h4 class="text-xl font-bold">Nikola Jokić</h4>
+                            <p class="text-sm text-nbaSilver">Denver Nuggets | C</p>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between text-sm mb-3">
+                            <span>26.4 PPG</span>
+                            <span>12.4 RPG</span>
+                            <span>9.0 APG</span>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <div>
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span>Eficiência ofensiva</span>
+                                    <span>63.2%</span>
+                                </div>
+                                <div class="stat-bar" style="width: 63.2%"></div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span>Defesa</span>
+                                    <span>68.5%</span>
+                                </div>
+                                <div class="stat-bar" style="width: 68.5%"></div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span>Clutch</span>
+                                    <span>85.4%</span>
+                                </div>
+                                <div class="stat-bar" style="width: 85.4%"></div>
+                            </div>
+                        </div>
+                        
+                        <button class="mt-4 w-full bg-nbaBlue py-2 rounded-lg text-sm hover:bg-blue-800 transition">
+                            Ver Estatísticas Completas
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Player 3 -->
+                <div class="bg-gray-800 rounded-lg overflow-hidden hover:shadow-xl transition">
+                    <div class="relative">
+                        <img src="https://cdn.nba.com/headshots/nba/latest/1040x760/1629029.png" alt="Luka Doncic" class="w-full h-48 object-cover">
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                            <h4 class="text-xl font-bold">Luka Dončić</h4>
+                            <p class="text-sm text-nbaSilver">Dallas Mavericks | PG</p>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between text-sm mb-3">
+                            <span>33.9 PPG</span>
+                            <span>9.2 RPG</span>
+                            <span>9.8 APG</span>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <div>
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span>Eficiência ofensiva</span>
+                                    <span>61.8%</span>
+                                </div>
+                                <div class="stat-bar" style="width: 61.8%"></div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span>Defesa</span>
+                                    <span>65.2%</span>
+                                </div>
+                                <div class="stat-bar" style="width: 65.2%"></div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span>Clutch</span>
+                                    <span>91.3%</span>
+                                </div>
+                                <div class="stat-bar" style="width: 91.3%"></div>
+                            </div>
+                        </div>
+                        
+                        <button class="mt-4 w-full bg-nbaBlue py-2 rounded-lg text-sm hover:bg-blue-800 transition">
+                            Ver Estatísticas Completas
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Betting Section -->
+    <section id="apostas" class="py-12 bg-darkBg">
+        <div class="container mx-auto px-4">
+            <h3 class="text-2xl font-bold mb-8">BILHETES RECOMENDADOS</h3>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div>
+                    <div class="bg-gradient-to-r from-nbaBlue to-nbaRed p-1 rounded-xl">
+                        <div class="bg-gray-800 rounded-lg p-6">
+                            <h4 class="text-xl font-bold mb-6 flex items-center">
+                                <i class="fas fa-star text-yellow-400 mr-3"></i> Bilhete Premium do Dia
+                            </h4>
+                            
+                            <div class="space-y-4">
+                                <!-- Bet 1 -->
+                                <div class="flex justify-between items-center p-3 bg-gray-700 rounded-lg">
+                                    <div>
+                                        <p class="font-medium">Celtics -4.5</p>
+                                        <p class="text-sm text-nbaSilver">BOS vs IND | 72% confiança</p>
+                                    </div>
+                                    <span class="bg-green-600 px-3 py-1 rounded">1.90</span>
+                                </div>
+                                
+                                <!-- Bet 2 -->
+                                <div class="flex justify-between items-center p-3 bg-gray-700 rounded-lg">
+                                    <div>
+                                        <p class="font-medium">Under 215.5</p>
+                                        <p class="text-sm text-nbaSilver">DAL vs MIN | 68% confiança</p>
+                                    </div>
+                                    <span class="bg-green-600 px-3 py-1 rounded">1.85</span>
+                                </div>
+                                
+                                <!-- Bet 3 -->
+                                <div class="flex justify-between items-center p-3 bg-gray-700 rounded-lg">
+                                    <div>
+                                        <p class="font-medium">Jokic over 10.5 assistências</p>
+                                        <p class="text-sm text-nbaSilver">DEN vs PHX | 65% confiança</p>
+                                    </div>
+                                    <span class="bg-green-600 px-3 py-1 rounded">2.10</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-6 pt-4 border-t border-gray-700">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <p class="text-nbaSilver">Odd total:</p>
+                                        <p class="text-xl font-bold">7.38</p>
+                                    </div>
+                                    <button class="bg-nbaRed px-6 py-2 rounded-lg font-medium hover:bg-red-700 transition">
+                                        Apostar Agora
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 bg-gray-800 rounded-lg p-6">
+                        <h4 class="text-xl font-bold mb-6">📊 Value Bets</h4>
+                        <p class="text-nbaSilver mb-4">Apostas com maior valor segundo nosso algoritmo:</p>
+                        
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition cursor-pointer">
+                                <div>
+                                    <p class="font-medium">Anthony Edwards over 28.5 pontos</p>
+                                    <p class="text-sm text-nbaSilver">MIN vs DAL | 60% confiança</p>
+                                </div>
+                                <span class="bg-blue-600 px-3 py-1 rounded">2.20</span>
+                            </div>
+                            
+                            <div class="flex justify-between items-center p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition cursor-pointer">
+                                <div>
+                                    <p class="font-medium">Suns +6.5</p>
+                                    <p class="text-sm text-nbaSilver">PHX vs DEN | 55% confiança</p>
+                                </div>
+                                <span class="bg-blue-600 px-3 py-1 rounded">1.95</span>
+                            </div>
+                            
+                            <div class="flex justify-between items-center p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition cursor-pointer">
+                                <div>
+                                    <p class="font-medium">Jaylen Brown over 2.5 cestas de 3</p>
+                                    <p class="text-sm text-nbaSilver">BOS vs IND | 58% confiança</p>
+                                </div>
+                                <span class="bg-blue-600 px-3 py-1 rounded">2.05</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="bg-gray-800 rounded-lg p-6 h-full">
+                        <h4 class="text-xl font-bold mb-6">📅 Próximos Jogos com Melhor Valor</h4>
+                        
+                        <div class="space-y-4">
+                            <!-- Game 1 -->
+                            <div class="p-4 bg-gray-700 rounded-lg">
+                                <div class="flex justify-between items-center mb-3">
+                                    <div class="flex items-center">
+                                        <img src="https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg" alt="Celtics" class="w-8 h-8 mr-2">
+                                        <span>BOS</span>
+                                    </div>
+                                    <span class="text-nbaSilver">30/05 - 20:30 ET</span>
+                                    <div class="flex items-center">
+                                        <span>IND</span>
+                                        <img src="https://cdn.nba.com/logos/nba/1610612754/primary/L/logo.svg" alt="Pacers" class="w-8 h-8 ml-2">
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-3 gap-2 text-center">
+                                    <div class="bg-gray-600 p-2 rounded">
+                                        <p class="text-xs text-nbaSilver">ML</p>
+                                        <p class="font-medium">1.45</p>
+                                    </div>
+                                    <div class="bg-gray-600 p-2 rounded">
+                                        <p class="text-xs text-nbaSilver">Spread</p>
+                                        <p class="font-medium">-4.5 (1.90)</p>
+                                    </div>
+                                    <div class="bg-gray-600 p-2 rounded">
+                                        <p class="text-xs text-nbaSilver">Total</p>
+                                        <p class="font-medium">U215.5 (1.85)</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-3 flex justify-between text-sm">
+                                    <span class="text-nbaSilver">AI Recomenda: <span class="text-green-400">Celtics -4.5</span></span>
+                                    <button class="text-nbaBlue hover:underline">Detalhes</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Game 2 -->
+                            <div class="p-4 bg-gray-700 rounded-lg">
+                                <div class="flex justify-between items-center mb-3">
+                                    <div class="flex items-center">
+                                        <img src="https://cdn.nba.com/logos/nba/1610612742/primary/L/logo.svg" alt="Mavericks" class="w-8 h-8 mr-2">
+                                        <span>DAL</span>
+                                    </div>
+                                    <span class="text-nbaSilver">30/05 - 21:00 ET</span>
+                                    <div class="flex items-center">
+                                        <span>MIN</span>
+                                        <img src="https://cdn.nba.com/logos/nba/1610612750/primary/L/logo.svg" alt="Timberwolves" class="w-8 h-8 ml-2">
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-3 gap-2 text-center">
+                                    <div class="bg-gray-600 p-2 rounded">
+                                        <p class="text-xs text-nbaSilver">ML</p>
+                                        <p class="font-medium">1.85</p>
+                                    </div>
+                                    <div class="bg-gray-600 p-2 rounded">
+                                        <p class="text-xs text-nbaSilver">Spread</p>
+                                        <p class="font-medium">-1.5 (1.95)</p>
+                                    </div>
+                                    <div class="bg-gray-600 p-2 rounded">
+                                        <p class="text-xs text-nbaSilver">Total</p>
+                                        <p class="font-medium">U212.5 (1.90)</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-3 flex justify-between text-sm">
+                                    <span class="text-nbaSilver">AI Recomenda: <span class="text-green-400">Under 212.5</span></span>
+                                    <button class="text-nbaBlue hover:underline">Detalhes</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Game 3 -->
+                            <div class="p-4 bg-gray-700 rounded-lg">
+                                <div class="flex justify-between items-center mb-3">
+                                    <div class="flex items-center">
+                                        <img src="https://cdn.nba.com/logos/nba/1610612743/primary/L/logo.svg" alt="Nuggets" class="w-8 h-8 mr-2">
+                                        <span>DEN</span>
+                                    </div>
+                                    <span class="text-nbaSilver">30/05 - 22:30 ET</span>
+                                    <div class="flex items-center">
+                                        <span>PHX</span>
+                                        <img src="https://cdn.nba.com/logos/nba/1610612756/primary/L/logo.svg" alt="Suns" class="w-8 h-8 ml-2">
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-3 gap-2 text-center">
+                                    <div class="bg-gray-600 p-2 rounded">
+                                        <p class="text-xs text-nbaSilver">ML</p>
+                                        <p class="font-medium">1.65</p>
+                                    </div>
+                                    <div class="bg-gray-600 p-2 rounded">
+                                        <p class="text-xs text-nbaSilver">Spread</p>
+                                        <p class="font-medium">-5.5 (1.90)</p>
+                                    </div>
+                                    <div class="bg-gray-600 p-2 rounded">
+                                        <p class="text-xs text-nbaSilver">Total</p>
+                                        <p class="font-medium">O225.5 (1.95)</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-3 flex justify-between text-sm">
+                                    <span class="text-nbaSilver">AI Recomenda: <span class="text-green-400">Nuggets ML</span></span>
+                                    <button class="text-nbaBlue hover:underline">Detalhes</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <button class="w-full bg-nbaRed py-3 rounded-lg font-medium hover:bg-red-700 transition flex items-center justify-center">
+                                <i class="fas fa-plus-circle mr-2"></i> CRIAR BILHETE PERSONALIZADO
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fas fa-basketball-ball text-nbaRed mr-2"></i> NBA ProStats
+                    </h4>
+                    <p class="text-nbaSilver">A plataforma mais avançada para análise de jogos da NBA e apostas esportivas com inteligência artificial.</p>
+                </div>
+                
+                <div>
+                    <h5 class="font-bold mb-4">Links Rápidos</h5>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-nbaSilver hover:text-nbaRed transition">Jogos ao Vivo</a></li>
+                        <li><a href="#" class="text-nbaSilver hover:text-nbaRed transition">Estatísticas</a></li>
+                        <li><a href="#" class="text-nbaSilver hover:text-nbaRed transition">AI Betting Tips</a></li>
+                        <li><a href="#" class="text-nbaSilver hover:text-nbaRed transition">Bilhetes Premium</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h5 class="font-bold mb-4">Recursos</h5>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-nbaSilver hover:text-nbaRed transition">API de Dados</a></li>
+                        <li><a href="#" class="text-nbaSilver hover:text-nbaRed transition">Blog de Estratégias</a></li>
+                        <li><a href="#" class="text-nbaSilver hover:text-nbaRed transition">Glossário</a></li>
+                        <li><a href="#" class="text-nbaSilver hover:text-nbaRed transition">Calculadora de Apostas</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h5 class="font-bold mb-4">Newsletter</h5>
+                    <p class="text-nbaSilver mb-4">Receba as melhores dicas no seu e-mail:</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Seu e-mail" class="bg-gray-800 px-4 py-2 rounded-l-lg focus:outline-none w-full">
+                        <button class="bg-nbaRed px-4 py-2 rounded-r-lg hover:bg-red-700 transition">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <div class="mt-4 flex space-x-4">
+                        <a href="#" class="text-2xl text-nbaSilver hover:text-nbaRed transition"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-2xl text-nbaSilver hover:text-nbaRed transition"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-2xl text-nbaSilver hover:text-nbaRed transition"><i class="fab fa-discord"></i></a>
+                        <a href="#" class="text-2xl text-nbaSilver hover:text-nbaRed transition"><i class="fab fa-telegram"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 pt-8 border-t border-gray-800 text-center text-nbaSilver">
+                <p>© 2024 NBA ProStats. Todos os direitos reservados. Dados fornecidos pela NBA API.</p>
+                <p class="mt-2 text-sm">Este site não tem afiliação com a NBA e não realiza apostas. Apenas fornece análises.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Simulação de dados da API
+        function fetchLiveGames() {
+            // Na implementação real, isso seria uma chamada para a NBA API
+            console.log("Buscando jogos ao vivo...");
+        }
+        
+        // Simulação de IA gerando dicas
+        function generateAITips() {
+            const question = document.querySelector('#ai input').value;
+            if(question.trim() !== '') {
+                // Simulação de resposta da IA
+                const aiResponse = document.querySelector('.ai-response');
+                aiResponse.innerHTML = `
+                    <div class="flex items-start mb-4">
+                        <div class="bg-nbaBlue p-2 rounded-full mr-3">
+                            <i class="fas fa-robot text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold mb-2">Resposta IA: ${question}</h4>
+                            <p class="text-nbaSilver mb-3">Baseado na análise de dados históricos e desempenho recente, nossa IA recomenda:</p>
+                            
+                            <div class="space-y-3">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-check text-white text-xs"></i>
+                                    </div>
+                                    <span><strong>Under 215.5 pontos</strong> (1.85) - 68% de chance de sucesso</span>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-check text-white text-xs"></i>
+                                    </div>
+                                    <span><strong>Jayson Tatum over 28.5 pontos</strong> (1.95) - 65% de chance</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 p-3 bg-gray-700 rounded-lg">
+                                <p class="text-sm"><strong>🔍 Insights:</strong> Os Celtics têm tido um desempenho defensivo excepcional nos últimos jogos, enquanto os Pacers estão sem seu jogador chave no rebote.</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+        
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Botão de enviar pergunta para IA
+            document.querySelector('#ai .fa-paper-plane').parentElement.addEventListener('click', generateAITips);
+            
+            // Simular busca de dados ao vivo
+            setInterval(fetchLiveGames, 30000);
+            fetchLiveGames();
+        });
+    </script>
+<p style="border-radius: 8px; text-align: center; font-size: 12px; color: #fff; margin-top: 16px;position: fixed; left: 8px; bottom: 8px; z-index: 10; background: rgba(0, 0, 0, 0.8); padding: 4px 8px;">Made with <img src="https://enzostvs-deepsite.hf.space/logo.svg" alt="DeepSite Logo" style="width: 16px; height: 16px; vertical-align: middle;display:inline-block;margin-right:3px;filter:brightness(0) invert(1);"><a href="https://enzostvs-deepsite.hf.space" style="color: #fff;text-decoration: underline;" target="_blank" >DeepSite</a> - 🧬 <a href="https://enzostvs-deepsite.hf.space?remix=goulartt3/meu-projeto-nba" style="color: #fff;text-decoration: underline;" target="_blank" >Remix</a></p></body>
+</html>
